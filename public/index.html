@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+<title>Simple Web Speech Recognition Example</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+</style>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+    var final_transcript = '';
+    var recognizing = false;
+
+    var language = 'de';  // change this to your language
+
+    $(document).ready(function() {
+
+		var ws = new WebSocket('ws://localhost:11972/');
+		// Called when the connection to the server is opened.
+		ws.onopen = function () {
+		};
+		 
+		// Called when the connection to the server is closed.
+		ws.onclose = function () {
+		};
+		ws.onmessage = function (evt) {
+			
+		};
+				// check that your browser supports the API
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("Your Browser does not support the Speech API");
+
+        } else {
+
+		
+            // Create the recognition object and define four event handlers (onstart, onerror, onend, onresult)
+
+            var recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;         // keep processing input until stopped
+            recognition.interimResults = true;     // show interim results
+            recognition.lang = language;           // specify the language
+
+            recognition.onstart = function() {
+                recognizing = true;
+            };
+
+            recognition.onerror = function(event) {
+            };
+
+            recognition.onend = function() {
+                recognizing = false;
+            };
+
+            recognition.onresult = function(event) {
+                var interim_transcript = '';
+                var final_transcript = '';
+            
+                // Assemble the transcript from the array of results
+                for (var i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        final_transcript += event.results[i][0].transcript;
+                    } else {
+                        interim_transcript += event.results[i][0].transcript;
+                    }
+                }
+                if(final_transcript.length > 0) {
+                   document.write(final_transcript);
+				   ws.send( final_transcript );
+                   delete event.results                
+                }
+            };
+
+
+            recognition.start();
+        }
+    });
+
+</script>
+
+</body>
+</html>
+
