@@ -32,6 +32,11 @@ module.exports = (function( spec ){
 			connection.on('end', function() {
 				logger.debug('server disconnected');
 			});
+            connection.on('error', function ( error ) {
+				
+				logger.error('Error in tcpconnection: ' + error);
+				
+			});
 			connection.pipe(speaker);
 			naoAudio = connection;
 		});
@@ -43,10 +48,8 @@ module.exports = (function( spec ){
 	};
 	
 	that.writeData = function( data ){
-	
-		logger.debug( data );
+	;
 		if( naoAudio != null ){
-            logger.debug( data );
 			naoAudio.write( data );
 		}
 		

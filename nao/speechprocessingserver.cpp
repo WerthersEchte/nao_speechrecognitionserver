@@ -50,7 +50,7 @@ void SpeechProcessingServer::init()
 
 SpeechProcessingServer::~SpeechProcessingServer()
 {
-    stopDetection();
+    stopRecognition();
 }
 
 bool SpeechProcessingServer::isRunning(){
@@ -76,6 +76,10 @@ void SpeechProcessingServer::setRemoteServer(const std::string &aIp, const std::
 
     try
     {
+        
+        if( mToServerSocket.is_open() ){
+            mToServerSocket.close();
+        }
         
         boost::asio::ip::tcp::resolver resolver(aios);
         boost::asio::ip::tcp::resolver::iterator endpoint = resolver.resolve(
@@ -104,11 +108,7 @@ void SpeechProcessingServer::startRecognition(){
         if( error == boost::asio::error::eof ){
             break;
         }
-        ALValue val;
-        val.arrayPush(std::string( buf, len ));
-        mProxyToALMemory.insertData( mALMemoryKey, std::string( buf, len ) );
-        mProxyToALMemory.raiseEvent( mALMemoryKey, val );
-
+        mProxyToALMemory.raiseEvent( mALMemoryKey, std::string( buf, len ) );
 
     }
 
