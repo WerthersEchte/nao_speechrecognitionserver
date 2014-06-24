@@ -17,9 +17,9 @@ module.exports = (function( spec ){
 	var naoAudio = null;
 	
 	var speaker = new Speaker({
-	  channels: 2,          
+	  channels: 4,          
 	  bitDepth: 16,         
-	  sampleRate: 44100     
+	  sampleRate: 48000     
 	});
 	
 	// connection
@@ -29,7 +29,6 @@ module.exports = (function( spec ){
 		audioServer = tcp.createServer( function( connection ) {
 			
 			logger.debug('server connected');
-			
 			connection.on('end', function() {
 				logger.debug('server disconnected');
 			});
@@ -47,6 +46,7 @@ module.exports = (function( spec ){
 	
 		logger.debug( data );
 		if( naoAudio != null ){
+            logger.debug( data );
 			naoAudio.write( data );
 		}
 		

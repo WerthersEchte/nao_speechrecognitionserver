@@ -4,21 +4,8 @@
 <head>
 <title>Simple Web Speech Recognition Example</title>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-</style>
-</head>
-
-<body>
-
 <script type="text/javascript">
-
-    var final_transcript = '';
-    var recognizing = false;
-
-    var language = 'de';  // change this to your language
-
-    $(document).ready(function() {
-
-		var ws = new WebSocket('ws://localhost:11972/');
+var ws = new WebSocket('ws://localhost:11972/');
 		// Called when the connection to the server is opened.
 		ws.onopen = function () {
 		};
@@ -29,6 +16,27 @@
 		ws.onmessage = function (evt) {
 			
 		};
+
+        var sendText = function( name ){
+            document.getElementById('data').innerHTML = document.getElementById('data').innerHTML + " " + document.getElementById(name).value
+            ws.send( document.getElementById(name).value );
+        }
+</script>
+</style>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+    var final_transcript = '';
+    var recognizing = false;
+
+    var language = 'en';  // change this to your language
+
+    $(document).ready(function() {
+
+		
 				// check that your browser supports the API
         if (!('webkitSpeechRecognition' in window)) {
             alert("Your Browser does not support the Speech API");
@@ -57,7 +65,7 @@
             recognition.onresult = function(event) {
                 var interim_transcript = '';
                 var final_transcript = '';
-            
+
                 // Assemble the transcript from the array of results
                 for (var i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
@@ -67,7 +75,7 @@
                     }
                 }
                 if(final_transcript.length > 0) {
-                   document.write(final_transcript);
+                   document.getElementById('data').innerHTML = document.getElementById('data').innerHTML + final_transcript;
 				   ws.send( final_transcript );
                    delete event.results                
                 }
@@ -78,8 +86,53 @@
         }
     });
 
+    
 </script>
-
+<span id="data"></span>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname' );" class="overlayForm">
+  <input id="Vorname" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname2' );" class="overlayForm">
+  <input id="Vorname2" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname3' );" class="overlayForm">
+  <input id="Vorname3" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname4' );" class="overlayForm">
+  <input id="Vorname4" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname5' );" class="overlayForm">
+  <input id="Vorname5" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname6' );" class="overlayForm">
+  <input id="Vorname6" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname7' );" class="overlayForm">
+  <input id="Vorname7" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname8' );" class="overlayForm">
+  <input id="Vorname8" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname9' );" class="overlayForm">
+  <input id="Vorname9" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname0' );" class="overlayForm">
+  <input id="Vorname0" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
+<form id="loginForm" action="javascript:void(0);" onsubmit="sendText( 'Vorname11' );" class="overlayForm">
+  <input id="Vorname11" type="text" size="100" maxlength="100">
+  <input id="loginSubmit" value="Send" class="button" type="submit">  
+</form>
 </body>
 </html>
 

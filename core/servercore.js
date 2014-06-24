@@ -8,7 +8,7 @@
  */
 
 var webSockets = require( process.cwd() + '/core/network/websockets.js' );
-var udpConnection = require( process.cwd() + '/core/network/tcpnetwork.js' );
+var tcpConnection = require( process.cwd() + '/core/network/tcpnetwork.js' );
 
 var logging = require( process.cwd() + '/core/logging/logging.js' );
 var logger = logging.getLogger( 'core' );
@@ -20,12 +20,12 @@ var app = express();
 var server = http.createServer(app);
 
 app.use( express.logger( 'dev' ) );
-app.use(express.static(__dirname + '/public'));
+app.use(express.static( process.cwd() + '/public'));
 server.listen( 11972 );
 
 webSockets.attach( server );
-udpConnection.createServer( 9090 );
+tcpConnection.createServer( 9090 );
 
-webSockets.start( udpConnection );
+webSockets.start( tcpConnection );
 
 
