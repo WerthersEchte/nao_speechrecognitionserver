@@ -14,10 +14,16 @@ var logging = require( process.cwd() + '/core/logging/logging.js' );
 var logger = logging.getLogger( 'core' );
 
 var express = require('express');
-var http = require('http');
+var https = require('https');
+fs = require("fs");
 
 var app = express();
-var server = http.createServer(app);
+
+var privateKey  = fs.readFileSync(process.cwd() + '/core/server.key', 'utf8');
+var certificate = fs.readFileSync(process.cwd() + '/core/server.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+var server = https.createServer(credentials, app);
 
 app.use( express.logger( 'dev' ) );
 app.use(express.static( process.cwd() + '/public'));

@@ -43,9 +43,8 @@ var ws = new WebSocket('ws://localhost:11972/');
 
         } else {
 
-		
+		    var timeout
             // Create the recognition object and define four event handlers (onstart, onerror, onend, onresult)
-
             var recognition = new webkitSpeechRecognition();
             recognition.continuous = true;         // keep processing input until stopped
             recognition.interimResults = true;     // show interim results
@@ -56,10 +55,12 @@ var ws = new WebSocket('ws://localhost:11972/');
             };
 
             recognition.onerror = function(event) {
+                recognition.start();
             };
 
             recognition.onend = function() {
                 recognizing = false;
+                recognition.start();
             };
 
             recognition.onresult = function(event) {
